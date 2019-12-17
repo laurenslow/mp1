@@ -1,0 +1,54 @@
+---
+title: "A Racial Analysis of 2015 Police Killings "
+author: "Nukhbah Majid, Ruth Tekleab Mekbib, and Lauren Low"
+date: "2/17/2019"
+output: html_document
+---
+```{r, include = FALSE}
+library(tidyverse)
+library(fivethirtyeight)
+```
+
+```{r, include = FALSE}
+police_killings_1 <- police_killings %>%
+  filter(raceethnicity %in% c("Black", "White"))
+```
+
+##Understanding the data
+This dataset shows individuals who were killed by police in 2015.  It provides each individual’s race, gender, income, and age as well as the GPS location, street address, city, state, month, day, and year where they were killed.  The data was collected by the Guardian, which was compiled into a  fivethirtyeight package. 
+
+Among all the available variables, we chose to plot personal income against age while faceting by race and gender.  Although the data provided has six different races (White, Black, Hispanic, Asian, Native American, and Other), we chose to only compare White individuals to Black individuals. This was primarily for two reasons: because when showing all six of the races, we experienced severe overplotting and a high number of missing values for non-majority races.  Finally, we chose to show only Black and White police killings because we wanted to eradicate as many misconceptions as possible which are attributed to black-white police killings.
+
+
+The following are important results to note:
+
+* More men were killed by police than women
+* More White individuals were killed by police than Black individuals
+* The income of White individuals killed was higher than Black individuals
+  + Average income for Black individuals hovers around $15,000
+  + Average income for White individuals hovers around $25,000
+* The age of White individuals killed is higher than Black individuals
+  + Average age for Black individuals hovers around 30
+  + Average age for White individuals hovers around 40
+
+For the second bullet, it’s important to consider the race demographics of US population in 2015.  It may be the case that in 2015 there was a higher percentage of White individuals than Black individuals, which could explain why more White individuals were killed by police than Black individuals.  Similar thinking can be applied to the third bullet in that on average in 2015 White individuals earned a higher income than Black individuals, which again would explain why the income of White individuals killed was higher than Black individuals. Furthermore, there could be an underreported number of Black people getting killed by the police which the data might not show. 
+
+It is interesting, however, to think about some of the ways in which data can be misconstrued or even misinterpreted. According to the Guardian, most of the killings of Black people happened in neighborhoods that were predominantly low income, with few jobs and limited educational opportunities. Interestingly, White people are also killed in low income neighborhoods but there are many exceptions. The article also mentioned that the values in the table are based on where people died and not where they lived which shows that although incidents of death occurred in low income neighborhoods, the people themselves may not necessarily be low income or live in these areas.
+ 
+Source:
+https://fivethirtyeight.com/features/where-police-have-killed-americans-in-2015/
+
+##Data visualization
+```{r, echo = FALSE}
+new_plot <- ggplot(data=police_killings_1, aes(x=age, y=p_income, color=gender))+
+  geom_point(alpha=0.5, size=1)+
+  facet_wrap(.~raceethnicity+gender)+
+  scale_x_continuous(name="Age", limits=c(10, 90)) +
+  scale_y_continuous(name="Personal Income", limits=c(0,87000)) +
+  ggtitle("Personal Income and Age of Police Killing Victims", subtitle = "Separated by Gender And Race")
+new_plot
+```
+
+
+
+
